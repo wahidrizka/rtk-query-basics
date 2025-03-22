@@ -38,12 +38,9 @@ const api = createApi({
     pokemonList: build.query<PokemonListing, void>({
       query() {
         return {
-          // these are specific to `fetchBaseQuery`
           url: "pokemon",
           params: { limit: 9 },
-          // all the different arguments that you could also pass into the `fetch` "init" option
-          // see https://developer.mozilla.org/en-US/docs/Web/API/fetch#parameters
-          method: "GET", // GET is the default, this could be skipped
+          method: "GET",
         };
       },
     }),
@@ -101,8 +98,7 @@ function PokemonList({
 }: {
   onPokemonSelected: (pokemonName: string) => void;
 }) {
-  const { isUninitialized, isLoading, isError, isSuccess, data } =
-    usePokemonListQuery();
+  const { isUninitialized, isLoading, isError, data } = usePokemonListQuery();
 
   if (isLoading || isUninitialized) {
     return <p>loading, please wait</p>;
@@ -133,10 +129,9 @@ const listFormatter = new Intl.ListFormat("en-GB", {
   type: "conjunction",
 });
 function PokemonDetails({ pokemonName }: { pokemonName: string }) {
-  const { isUninitialized, isLoading, isError, isSuccess, data } =
-    usePokemonDetailQuery({
-      name: pokemonName,
-    });
+  const { isUninitialized, isLoading, isError, data } = usePokemonDetailQuery({
+    name: pokemonName,
+  });
 
   if (isLoading || isUninitialized) {
     return <p>loading, please wait</p>;
